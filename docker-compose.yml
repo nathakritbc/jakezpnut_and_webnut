@@ -1,21 +1,16 @@
-version: "3"
+version: "3.1"
 
 services:
-  nut-server:
-    image: networkupstools/nut:latest
-    container_name: nut-server
-    ports:
-      - "3493:3493" # Port for NUT driver
+  nut:
+    image: "teknologist/webnut"
+    container_name: "webnut"
     environment:
-      - UPSNAME=myups # Replace with your UPS name
-      - UPSTYPE=usb # Replace with your UPS type
-    volumes:
-      - /etc/nut # Use a local NUT configuration directory
-
-  nut-client:
-    image: networkupstools/nut-client:latest
-    container_name: nut-client
-    depends_on:
-      - nut-server
-    volumes:
-      - /etc/nut # Use the same local NUT configuration directory
+      - UPS_HOST=192.168.137.109
+      - UPS_PORT=3493
+      - UPS_USER=admin
+      - UPS_PASSWARD=sec
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 6543:6543
