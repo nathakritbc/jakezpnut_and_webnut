@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  nut-server:
+    image: networkupstools/nut:latest
+    container_name: nut-server
+    ports:
+      - "3493:3493" # Port for NUT driver
+    environment:
+      - UPSNAME=myups # Replace with your UPS name
+      - UPSTYPE=usb # Replace with your UPS type
+    volumes:
+      - /etc/nut # Use a local NUT configuration directory
+
+  nut-client:
+    image: networkupstools/nut-client:latest
+    container_name: nut-client
+    depends_on:
+      - nut-server
+    volumes:
+      - /etc/nut # Use the same local NUT configuration directory
